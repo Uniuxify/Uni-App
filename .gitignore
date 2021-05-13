@@ -1,0 +1,7 @@
+/venv
+/.idea
+
+
+# Cache files
+__pycache__/
+*.py[cod]
