@@ -71,24 +71,23 @@ Item {
                     Layout.alignment : Qt.AlignTop
                     height: text12.height
                     TextField {
-
                         id: text_field13
                         property string rateTextBuffer: ""
                         Component.onCompleted: text_field13.ensureVisible(0)
                         onEditingFinished: text_field13.ensureVisible(0)
-                        onImplicitWidthChanged: { parent.implicitWidth = implicitWidth}
+                        onImplicitWidthChanged: { parent.implicitWidth = implicitWidth }
                         onTextChanged: {
-                                         if(text != "") {
-                                            root.rate = text
-                                            rateTextBuffer = text
-                                         }
-                                       }
+                            if(text != "") {
+                                root.rate = text
+                            rateTextBuffer = text
+                            }
+                        }
                         anchors.fill: parent
                         text: {
-                                if(!activeFocus)
-                                    return rate
-                                return rateTextBuffer
-                              }
+                            if(!activeFocus)
+                                return rate
+                            return rateTextBuffer
+                        }
                         placeholderText: "..."
                         placeholderTextColor: "#717171"
                         color: "#BCBCBC"
@@ -119,11 +118,14 @@ Item {
                         id: mouseArea1
                         anchors.fill: parent
                         hoverEnabled: true
-                        onPressed: { update.source = "update-pressed.png"
-                                     update_focus.forceActiveFocus()
-                                   }
-                        onReleased: { update.source = "update-glow.png"
-                                        updateRate()}
+                        onPressed: {
+                            update.source = "update-pressed.png"
+                            update_focus.forceActiveFocus()
+                        }
+                        onReleased: {
+                            update.source = "update-glow.png"
+                            updateRate()
+                        }
                         onExited: { update.source = "update.png" }
                         onEntered: { update.source = "update-glow.png" }
                     }
@@ -162,17 +164,17 @@ Item {
                         onEditingFinished: text_field21.ensureVisible(0)
                         onImplicitWidthChanged: { parent.implicitWidth = implicitWidth}
                         onTextChanged: {
-                                         if(text != "") {
-                                            root.n1 = text
-                                            n1TextBuffer = text
-                                         }
-                                       }
+                            if(text != "") {
+                               root.n1 = text
+                               n1TextBuffer = text
+                            }
+                        }
                         anchors.fill: parent
                         text: {
-                                if(!activeFocus)
-                                    return n1
-                                return n1TextBuffer
-                              }
+                            if(!activeFocus)
+                                return n1
+                            return n1TextBuffer
+                        }
                         placeholderText: "..."
                         placeholderTextColor: "#717171"
                         color: "#BCBCBC"
@@ -215,17 +217,17 @@ Item {
                         onEditingFinished: text_field24.ensureVisible(0)
                         onImplicitWidthChanged: { parent.implicitWidth = implicitWidth}
                         onTextChanged: {
-                                         if(text != "") {
-                                            root.n2 = text
-                                            n2TextBuffer = text
-                                         }
-                                       }
+                            if(text != "") {
+                                root.n2 = text
+                                n2TextBuffer = text
+                            }
+                        }
                         anchors.fill: parent
                         text: {
-                                if(!activeFocus)
-                                    return n2
-                                return n2TextBuffer
-                              }
+                            if(!activeFocus)
+                                return n2
+                            return n2TextBuffer
+                        }
                         placeholderText: "..."
                         placeholderTextColor: "#717171"
                         color: "#BCBCBC"
@@ -255,9 +257,10 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: true
                         onPressed: { swapImg.source = "swap-pressed.png" }
-                        onReleased: { swapImg.source = "swap-glow.png"
-                                        swap()
-                                    }
+                        onReleased: {
+                            swapImg.source = "swap-glow.png"
+                            swap()
+                        }
                         onExited: { swapImg.source = "swap.png" }
                         onEntered: { swapImg.source = "swap-glow.png" }
                     }
@@ -285,9 +288,9 @@ Item {
                 hoverEnabled: true
                 onPressed: { remove.source = "remove-pressed.png" }
                 onReleased: {
-                              remove.source = "remove-glow.png"
-                              closed()
-                             }
+                    remove.source = "remove-glow.png"
+                    closed()
+                }
                 onExited: { remove.source = "remove.png" }
                 onEntered: { remove.source = "remove-glow.png" }
             }

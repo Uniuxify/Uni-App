@@ -39,33 +39,33 @@ Item {
                     onClosed: currencyBlocks.model.removeRow(display.obj_id)
                     onImplicitWidthChanged: currencyBlocks.implicitWidth = implicitWidth > currencyBlocks.implicitWidth ? implicitWidth : currencyBlocks.implicitWidth
                     onRateChanged: {
-                                    display.rate = parseFloat(rate)
-                                    console.log("rate=" + display.rate)
-                                    rate = display.rate
-                                    n1 = display.n1
-                                    n2 = display.n2
-                                   }
+                        display.rate = parseFloat(rate)
+                        console.log("rate=" + display.rate)
+                        rate = display.rate
+                        n1 = display.n1
+                        n2 = display.n2
+                    }
                     onUpdateRate: {
-                                    display.update_rate()
-                                    rate = display.rate
-                                    n1 = display.n1
-                                    n2 = display.n2
-                                    source = display.source
-                                    qoute = display.quote
-                                  }
+                        display.update_rate()
+                        rate = display.rate
+                        n1 = display.n1
+                        n2 = display.n2
+                        source = display.source
+                        qoute = display.quote
+                    }
 
                     onN1Changed: {
-                                    display.n1 = parseFloat(n1)
-                                    console.log("n1="+display.n1)
-                                    n1 = display.n1
-                                    n2 = display.n2
-                                 }
+                        display.n1 = parseFloat(n1)
+                        console.log("n1="+display.n1)
+                        n1 = display.n1
+                        n2 = display.n2
+                    }
                     onN2Changed: {
-                                    display.n2 = parseFloat(n2)
-                                    console.log("n2="+display.n2)
-                                    n1 = display.n1
-                                    n2 = display.n2
-                                 }
+                        display.n2 = parseFloat(n2)
+                        console.log("n2="+display.n2)
+                        n1 = display.n1
+                        n2 = display.n2
+                    }
                     onSwap: {
                         display.swap()
                         rate = display.rate
@@ -94,8 +94,10 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: true
                         onPressed: { clear.source = "clear-pressed.png" }
-                        onReleased: { clear.source = "clear-selected.png"
-                                      currencyBlocks.model.clear()}
+                        onReleased: {
+                            clear.source = "clear-selected.png"
+                            currencyBlocks.model.clear()
+                        }
                         onExited: { clear.source = "clear.png" }
                         onEntered: { clear.source = "clear-selected.png" }
                     }
@@ -118,8 +120,10 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: true
                         onPressed: { add.source = "add-pressed.png" }
-                        onReleased: { add.source = "add-selected.png"
-                                      currencyBlocks.model.append()}
+                        onReleased: {
+                            add.source = "add-selected.png"
+                            currencyBlocks.model.append()
+                        }
                         onExited: { add.source = "add.png" }
                         onEntered: { add.source = "add-selected.png" }
                     }
