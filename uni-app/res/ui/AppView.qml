@@ -33,16 +33,39 @@ Item {
                 anchors.leftMargin: 30
                 spacing: 10
                 orientation: ListView.Vertical
-                model: model
+                model: blockModel
                 delegate: CurrencyExcangeRateBlock {
-                    rate: model.rate
-                    n1: model.n1
-                    n2: model.n2
-                    currency1: model.currency1
-                    currency2: model.currency2
+                    currency1: display.source
+                    currency2: display.quote
                     width: currencyBlocks.width
-                    onClosed: currencyBlocks.model.remove(model.index)
+                    onClosed: currencyBlocks.model.removeRow(display.obj_id)
                     onImplicitWidthChanged: currencyBlocks.implicitWidth = implicitWidth > currencyBlocks.implicitWidth ? implicitWidth : currencyBlocks.implicitWidth
+                    onRateChanged: {
+                                    display.rate = parseFloat(rate)
+                                    console.log("rate=" + display.rate)
+                                    rate = display.rate
+                                    n1 = display.n1
+                                    n2 = display.n2
+                                   }
+                    onUpdateRate: {
+                                    display.update_rate()
+                                    rate = display.rate
+                                    n1 = display.n1
+                                    n2 = display.n2
+                                  }
+
+                    onN1Changed: {
+                                    display.n1 = parseFloat(n1)
+                                    console.log("n1="+display.n1)
+                                    n1 = display.n1
+                                    n2 = display.n2
+                                 }
+                    onN2Changed: {
+                                    display.n2 = parseFloat(n2)
+                                    console.log("n2="+display.n2)
+                                    n1 = display.n1
+                                    n2 = display.n2
+                                 }
                 }
             }
             Rectangle {
@@ -88,7 +111,7 @@ Item {
                         hoverEnabled: true
                         onPressed: { add.source = "add-pressed.png" }
                         onReleased: { add.source = "add-selected.png"
-                                      currencyBlocks.model.append({"rate": "1","n1": "1","n2": "1","currency1": "UNI","currency2": "UNI"})}
+                                      currencyBlocks.model.append()}
                         onExited: { add.source = "add.png" }
                         onEntered: { add.source = "add-selected.png" }
                     }
@@ -99,30 +122,7 @@ Item {
                     }
                 }
             }
-            ListModel {
-                id: model
-                ListElement {
-                    rate: "300000"
-                    n1: "1000"
-                    n2: "0.00035"
-                    currency1: "RUB"
-                    currency2: "ETH"
-                }
-                ListElement {
-                    rate: "3000000000000"
-                    n1: "1000"
-                    n2: "0.000005"
-                    currency1: "RUB"
-                    currency2: "BTC"
-                }
-                ListElement {
-                    rate: "300000"
-                    n1: "1000"
-                    n2: "0.00035"
-                    currency1: "RUB"
-                    currency2: "USD"
-                }
-            }
+
             function updateModel(index, newModel) {
                 currencyBlocks.model.set(index, newModel)
             }
