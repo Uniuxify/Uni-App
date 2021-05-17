@@ -60,20 +60,25 @@ class CurrencyBlock(QtCore.QObject):
         self.n2Changed.emit()
         self.update_n1()
 
+    @QtCore.Slot()
     def swap(self):
-        self.reversed = not self.reversed
+        temp = self.quote
+        self.quote = self.source
+        self.source = temp
 
     def get_source(self):
         return self.__source
 
     def set_source(self, source):
         self.__source = source
+        self.update_rate()
 
     def get_quote(self):
         return self.__quote
 
     def set_quote(self, quote):
         self.__quote = quote
+        self.update_rate()
 
     rateChanged = QtCore.Signal()
     rate = QtCore.Property(float, get_rate, set_rate, notify=rateChanged)

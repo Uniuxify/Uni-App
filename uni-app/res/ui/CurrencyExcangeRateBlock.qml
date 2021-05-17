@@ -7,10 +7,11 @@ Item {
     property string n1: "1"
     property string n2: "1"
     property string rate: "1"
-    property string currency1: "UNI"
-    property string currency2: "UNI"
+    property string source: "UNI"
+    property string quote: "UNI"
 
     signal updateRate()
+    signal swap()
     signal closed()
 
     height: 180
@@ -50,7 +51,7 @@ Item {
                 Text {
                     id:text11
                     color: "#00BC13"
-                    text: currency1
+                    text: source
                     font.family: "Roboto"
                     font.pixelSize: 35
                     Layout.alignment : Qt.AlignTop
@@ -104,7 +105,7 @@ Item {
                 Text {
                     id:text14
                     color: "#00BC13"
-                    text: currency2
+                    text: quote
                     font.family: "Roboto"
                     font.pixelSize: 35
                     Layout.alignment : Qt.AlignTop
@@ -188,7 +189,7 @@ Item {
                 Text {
                     id: text22
                     color: "#00BC13"
-                    text: currency1
+                    text: source
                     font.family: "Roboto"
                     font.pixelSize: 35
                     Layout.alignment : Qt.AlignBottom
@@ -240,7 +241,7 @@ Item {
                 }
                 Text {
                     color: "#00BC13"
-                    text: currency2
+                    text: quote
                     font.family: "Roboto"
                     font.pixelSize: 35
                     Layout.alignment : Qt.AlignBottom
@@ -253,13 +254,15 @@ Item {
                         id: mouseArea2
                         anchors.fill: parent
                         hoverEnabled: true
-                        onPressed: { swap.source = "swap-pressed.png" }
-                        onReleased: { swap.source = "swap-glow.png" }
-                        onExited: { swap.source = "swap.png" }
-                        onEntered: { swap.source = "swap-glow.png" }
+                        onPressed: { swapImg.source = "swap-pressed.png" }
+                        onReleased: { swapImg.source = "swap-glow.png"
+                                        swap()
+                                    }
+                        onExited: { swapImg.source = "swap.png" }
+                        onEntered: { swapImg.source = "swap-glow.png" }
                     }
                     Image {
-                        id: swap
+                        id: swapImg
                         source: "swap.png"
                         anchors.fill: parent
                     }

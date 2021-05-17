@@ -35,8 +35,6 @@ Item {
                 orientation: ListView.Vertical
                 model: blockModel
                 delegate: CurrencyExcangeRateBlock {
-                    currency1: display.source
-                    currency2: display.quote
                     width: currencyBlocks.width
                     onClosed: currencyBlocks.model.removeRow(display.obj_id)
                     onImplicitWidthChanged: currencyBlocks.implicitWidth = implicitWidth > currencyBlocks.implicitWidth ? implicitWidth : currencyBlocks.implicitWidth
@@ -52,6 +50,8 @@ Item {
                                     rate = display.rate
                                     n1 = display.n1
                                     n2 = display.n2
+                                    source = display.source
+                                    qoute = display.quote
                                   }
 
                     onN1Changed: {
@@ -66,6 +66,14 @@ Item {
                                     n1 = display.n1
                                     n2 = display.n2
                                  }
+                    onSwap: {
+                        display.swap()
+                        rate = display.rate
+                        n1 = display.n1
+                        n2 = display.n2
+                        source = display.source
+                        quote = display.quote
+                    }
                 }
             }
             Rectangle {
