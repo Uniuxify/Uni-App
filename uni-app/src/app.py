@@ -3,58 +3,95 @@ from PySide6 import QtCore
 
 
 class CurrencyBlock(QtCore.QObject):
-    def __init__(self, n1=1, n2=1, rate=1, source="UNI", quote="UNI"):
+    def __init__(self, n1=1, n2=1, rate=1, source="RUB", quote="USD"):
         super().__init__()
         self.__n1 = n1
         self.__n2 = n2
         self.__rate = rate
-        self.source = source
-        self.quote = quote
+        self.__source = source
+        self.__quote = quote
         self.reversed = False  # n1 соответсвует source, n2 соответсвует quote
 
-    @QtCore.Slot
+    @QtCore.Slot()
+    def get_id(self):
+        return str(id(self))
+
+    @QtCore.Slot()
     def update_rate(self):
         self.rate = cg_api.get_rate(self.source, self.quote)
 
     def get_rate(self):
-        return self.__rate
+        return round(self.__rate, 4)
 
+    @QtCore.Slot(float)
     def set_rate(self, rate):
+        print("rate updated")
         self.__rate = rate
-        self.update_n1()
+        self.rateChanged.emit()
+        self.update_n2()
 
     def update_n1(self):
         if not self.reversed:
-            self.n1 = self.n2 / self.rate
+            self.__n1 = self.n2 / self.rate
         else:
-            self.n1 = self.n2 * self.rate
+            self.__n1 = self.n2 * self.rate
+        self.n1Changed.emit()
 
     def get_n1(self):
-        return self.__n1
+        return round(self.__n1, 4)
 
     def set_n1(self, n1):
         self.__n1 = n1
+        self.n1Changed.emit()
         self.update_n2()
 
     def update_n2(self):
         if not self.reversed:
-            self.n2 = self.n1 * self.rate
+            self.__n2 = self.n1 * self.rate
         else:
-            self.n2 = self.n1 / self.rate
+            self.__n2 = self.n1 / self.rate
+        self.n2Changed.emit()
 
     def get_n2(self):
-        return self.__n2
+        return round(self.__n2, 4)
 
     def set_n2(self, n2):
         self.__n2 = n2
+        self.n2Changed.emit()
         self.update_n1()
 
     def swap(self):
         self.reversed = not self.reversed
 
-    rate = property(get_rate, set_rate)
-    n1 = property(get_n1, set_n1)
-    n2 = property(get_n2, set_n2)
+    def get_source(self):
+        return self.__source
+
+    def set_source(self, source):
+        self.__source = source
+
+    def get_quote(self):
+        return self.__quote
+
+    def set_quote(self, quote):
+        self.__quote = quote
+
+    rateChanged = QtCore.Signal()
+    rate = QtCore.Property(float, get_rate, set_rate, notify=rateChanged)
+
+    n1Changed = QtCore.Signal()
+    n1 = QtCore.Property(float, get_n1, set_n1, notify=n1Changed)
+
+    n2Changed = QtCore.Signal()
+    n2 = QtCore.Property(float, get_n2, set_n2, notify=n2Changed)
+
+    sourceChanged = QtCore.Signal()
+    source = QtCore.Property(str, get_source, set_source, notify=sourceChanged)
+
+    quoteChanged = QtCore.Signal()
+    quote = QtCore.Property(str, get_quote, set_quote, notify=quoteChanged)
+
+    obj_idChanged = QtCore.Signal()
+    obj_id = QtCore.Property(str, get_id, notify=obj_idChanged)
 
 
 class BlocksModel(QtCore.QAbstractListModel):
@@ -66,8 +103,9 @@ class BlocksModel(QtCore.QAbstractListModel):
         return len(self.blockItems)
 
     def setData(self, index, value, role=QtCore.Qt.EditRole):
+        print(1)
         if role == QtCore.Qt.EditRole:
-            self.m_items[index.row()] = str(value.toString())
+            self.blockItems[index.row()] = value
             self.dataChanged.emit(index, index)
             return True
         return False
@@ -77,6 +115,32 @@ class BlocksModel(QtCore.QAbstractListModel):
             row = index.row()
             if 0 <= row < self.rowCount():
                 return self.blockItems[row]
+        if role == QtCore.Qt.UserRole:
+            row = index.row()
+            return id(self.blockItems[row])
+
+    @QtCore.Slot()
+    def clear(self):
+        self.beginRemoveRows(QtCore.QModelIndex(), 0, self.rowCount()-1)
+        self.blockItems.clear()
+        self.endRemoveRows()
+
+    @QtCore.Slot()
+    def append(self):
+        self.beginInsertRows(QtCore.QModelIndex(), self.rowCount(), self.rowCount())
+        self.blockItems.append(CurrencyBlock())
+        self.endInsertRows()
+
+    @QtCore.Slot(str)
+    def removeRow(self, obj_id, parent=QtCore.QModelIndex()):
+
+        for row in range(0, self.rowCount()):
+            if self.blockItems[row].get_id() == obj_id:
+                self.beginRemoveRows(QtCore.QModelIndex(), row, row)
+                self.blockItems.pop(row)
+                self.endRemoveRows()
+                return True
+        return False
 
 
 class App:

@@ -6,6 +6,8 @@ import sys
 
 from PySide6 import QtCore, QtGui, QtQml
 
+from app import BlocksModel, CurrencyBlock
+
 
 def qt_message_handler(mode, context, message):
     if mode == 4:
@@ -25,6 +27,11 @@ if __name__ == "__main__":
     QtCore.qInstallMessageHandler(qt_message_handler)
     app = QtGui.QGuiApplication(sys.argv)
     engine = QtQml.QQmlApplicationEngine()
+
+    model = BlocksModel()
+    # model = CurrencyBlock()
+    engine.rootContext().setContextProperty("blockModel", model)
+
     engine.load(os.fspath(Path(__file__).resolve().parent.parent / "res/ui/Index.qml"))
 
     if not engine.rootObjects():
