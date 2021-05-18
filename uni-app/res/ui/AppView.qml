@@ -51,7 +51,7 @@ Item {
                         n1 = display.n1
                         n2 = display.n2
                         source = display.source
-                        qoute = display.quote
+                        quote = display.quote
                     }
 
                     onN1Changed: {
