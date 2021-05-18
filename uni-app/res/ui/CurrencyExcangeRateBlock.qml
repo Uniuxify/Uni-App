@@ -248,7 +248,8 @@ Item {
                     font.pixelSize: 35
                     Layout.alignment : Qt.AlignBottom
                 }
-                Item {
+                FocusScope {
+                    id: swap_focus
                     height: 40
                     width: 40
                     Layout.alignment : Qt.AlignBottom
@@ -256,7 +257,10 @@ Item {
                         id: mouseArea2
                         anchors.fill: parent
                         hoverEnabled: true
-                        onPressed: { swapImg.source = "swap-pressed.png" }
+                        onPressed: {
+                            swapImg.source = "swap-pressed.png"
+                            swap_focus.forceActiveFocus()
+                        }
                         onReleased: {
                             swapImg.source = "swap-glow.png"
                             swap()
