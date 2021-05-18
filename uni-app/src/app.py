@@ -139,19 +139,3 @@ class BlocksModel(QtCore.QAbstractListModel):
                 self.endRemoveRows()
                 return True
         return False
-
-
-class App:
-
-    def __init__(self):
-        self.blocks = []
-
-    def clear(self):
-        self.blocks.clear()
-
-    def add(self):
-        self.blocks.append(CurrencyBlock())
-
-    # TODO
-    def load_from_json(self, path):
-        pass
