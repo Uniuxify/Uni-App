@@ -33,53 +33,47 @@ Item {
                 orientation: ListView.Vertical
                 model: blockModel
                 delegate: CurrencyExcangeRateBlock {
-                    width: currencyBlocks.width
-                    onClosed: currencyBlocks.model.removeRow(display.obj_id)
-                    onRateChanged: {
-                        display.rate = parseFloat(rate)
-                        rate = display.rate
-                        n1 = display.n1
-                        n2 = display.n2
-                    }
-                    onUpdateRate: {
-                        display.update_rate()
+                    function update() {
                         rate = display.rate
                         n1 = display.n1
                         n2 = display.n2
                         source = display.source
                         quote = display.quote
+                    }
+                    width: currencyBlocks.width
+                    Component.onCompleted: {
+                        update()
+                    }
+                    onClosed: currencyBlocks.model.removeRow(display.obj_id)
+                    onRateChanged: {
+                        display.rate = parseFloat(rate)
+                        update()
+                    }
+                    onUpdateRate: {
+                        display.update_rate()
+                        update()
                     }
 
                     onN1Changed: {
                         display.n1 = parseFloat(n1)
-                        n1 = display.n1
-                        n2 = display.n2
+                        update()
                     }
                     onN2Changed: {
                         display.n2 = parseFloat(n2)
-                        n1 = display.n1
-                        n2 = display.n2
+                        update()
                     }
 
                     onSourceChanged: {
                         display.source = source
-                        rate = display.rate
-                        n1 = display.n1
-                        n2 = display.n2
+                        update()
                     }
                     onQuoteChanged: {
                         display.quote = quote
-                        rate = display.rate
-                        n1 = display.n1
-                        n2 = display.n2
+                        update()
                     }
                     onSwap: {
                         display.swap()
-                        rate = display.rate
-                        n1 = display.n1
-                        n2 = display.n2
-                        source = display.source
-                        quote = display.quote
+                        update()
                     }
                 }
             }
