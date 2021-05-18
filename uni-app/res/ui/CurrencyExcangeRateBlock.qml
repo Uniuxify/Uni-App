@@ -130,12 +130,12 @@ Item {
                         onImplicitWidthChanged: { parent.implicitWidth = implicitWidth }
                         onTextChanged: {
                             const regexp = new RegExp("^0*(e[+\-\d]*)?$")
-                            if(text != "" && !text.match(regexp)) {
+                            if(text == "" || text.match(regexp)) {
+                                errorMsg.text = "*rate cannot be zero"
+                            } else {
                                 root.rate = text
                                 rateTextBuffer = text
                                 errorMsg.text = ""
-                            } else {
-                                errorMsg.text = "*rate cannot be zero"
                             }
                         }
                         anchors.fill: parent
@@ -256,6 +256,15 @@ Item {
                     id: text21
                     Layout.alignment : Qt.AlignBottom
                     height: text23.height
+                    Text {
+                        id: errorMsg2
+                        text: ""
+                        color: "#ccF92525"
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        anchors.bottomMargin: -7
+                        anchors.leftMargin: -3
+                    }
                     TextField {
                         id:text_field21
                         property string n1TextBuffer: ""
@@ -309,6 +318,16 @@ Item {
                     id: text24
                     Layout.alignment : Qt.AlignBottom
                     height: text23.height
+
+                    Text {
+                        id: errorMsg3
+                        text: ""
+                        color: "#ccF92525"
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        anchors.bottomMargin: -7
+                        anchors.leftMargin: -3
+                    }
                     TextField {
                         id:text_field24
                         property string n2TextBuffer: ""
