@@ -79,7 +79,7 @@ Item {
                         onTextChanged: {
                             if(text != "") {
                                 root.rate = text
-                            rateTextBuffer = text
+                                rateTextBuffer = text
                             }
                         }
                         anchors.fill: parent
