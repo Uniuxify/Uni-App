@@ -3,7 +3,7 @@ import json
 
 
 def get_rate(source, quote):
-    return float(requests.get(f'https://api.coingate.com/v2/rates/merchant/{source}/{quote}').content.decode('UTF-8'))
+    return requests.get(f'https://api.coingate.com/v2/rates/merchant/{source}/{quote}').content.decode('UTF-8')
 
 
 def get_currency_list():
