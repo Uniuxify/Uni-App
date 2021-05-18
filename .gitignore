@@ -7,3 +7,6 @@ uni-app.pyproject.user
 # Cache files
 __pycache__/
 *.py[cod]
+
+# Save directory
+**/saves
