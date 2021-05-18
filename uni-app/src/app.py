@@ -1,13 +1,15 @@
 import coingate as cg_api
 from PySide6 import QtCore
+import json
+import os
 
 
 class CurrencyBlock(QtCore.QObject):
-    def __init__(self, n1=1, n2=1, rate=1, source="USD", quote="USD"):
+    def __init__(self, rate=1, n1=1, n2=1, source="USD", quote="USD"):
         super().__init__()
+        self.__rate = rate
         self.__n1 = n1
         self.__n2 = n2
-        self.__rate = rate
         self.__source = source
         self.__quote = quote
 
@@ -125,9 +127,9 @@ class BlocksModel(QtCore.QAbstractListModel):
         self.endRemoveRows()
 
     @QtCore.Slot()
-    def append(self):
+    def append(self, block=CurrencyBlock()):
         self.beginInsertRows(QtCore.QModelIndex(), self.rowCount(), self.rowCount())
-        self.blockItems.append(CurrencyBlock())
+        self.blockItems.append(block)
         self.endInsertRows()
 
     @QtCore.Slot(str)
@@ -139,6 +141,18 @@ class BlocksModel(QtCore.QAbstractListModel):
                 self.endRemoveRows()
                 return True
         return False
+
+    def save(self):
+        temp = []
+        for block in self.blockItems:
+            temp.append({"rate": block.rate, "n1": block.n1, "n2": block.n2, "source": block.source, "quote": block.quote})
+
+        json.dump(temp, open("../saves/save.json", "w+"), indent=4)
+
+    def load(self, fp):
+        json_obj = json.load(fp)
+        for json_block in json_obj:
+            self.append(CurrencyBlock(rate=json_block["rate"], n1=json_block["n1"], n2=json_block["n2"], source=json_block["source"], quote=json_block["quote"]))
 
 
 class CurrencyListModel(QtCore.QAbstractListModel):

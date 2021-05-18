@@ -29,6 +29,11 @@ if __name__ == "__main__":
     engine = QtQml.QQmlApplicationEngine()
 
     blocks_model = BlocksModel()
+    Path('../saves').mkdir(parents=True, exist_ok=True)
+    try:
+        blocks_model.load(open("../saves/save.json"))
+    except FileNotFoundError:
+        pass
     currency_list_model = CurrencyListModel(coingate.get_currency_list())
     engine.rootContext().setContextProperty("blockModel", blocks_model)
     engine.rootContext().setContextProperty("currencyListModel", currency_list_model)
@@ -37,4 +42,6 @@ if __name__ == "__main__":
 
     if not engine.rootObjects():
         sys.exit(-1)
-    sys.exit(app.exec())
+    exit_code = app.exec()
+    blocks_model.save()
+    sys.exit(exit_code)
