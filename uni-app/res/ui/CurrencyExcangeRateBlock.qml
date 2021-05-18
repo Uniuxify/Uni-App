@@ -70,6 +70,15 @@ Item {
                     Layout.leftMargin: -7
                     Layout.alignment : Qt.AlignTop
                     height: text12.height
+                    Text {
+                        id: errorMsg
+                        text: ""
+                        color: "#ccF92525"
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        anchors.bottomMargin: -7
+                        anchors.leftMargin: -3
+                    }
                     TextField {
                         id: text_field13
                         property string rateTextBuffer: ""
@@ -77,9 +86,12 @@ Item {
                         onEditingFinished: text_field13.ensureVisible(0)
                         onImplicitWidthChanged: { parent.implicitWidth = implicitWidth }
                         onTextChanged: {
-                            if(text != "") {
+                            if(text != "" && text != "0") {
                                 root.rate = text
                                 rateTextBuffer = text
+                                errorMsg.text = ""
+                            } else {
+                                errorMsg.text = "*rate cannot be zero"
                             }
                         }
                         anchors.fill: parent
