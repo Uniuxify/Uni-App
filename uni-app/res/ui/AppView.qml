@@ -40,7 +40,6 @@ Item {
                     onImplicitWidthChanged: currencyBlocks.implicitWidth = implicitWidth > currencyBlocks.implicitWidth ? implicitWidth : currencyBlocks.implicitWidth
                     onRateChanged: {
                         display.rate = parseFloat(rate)
-                        console.log("rate=" + display.rate)
                         rate = display.rate
                         n1 = display.n1
                         n2 = display.n2
@@ -56,13 +55,24 @@ Item {
 
                     onN1Changed: {
                         display.n1 = parseFloat(n1)
-                        console.log("n1="+display.n1)
                         n1 = display.n1
                         n2 = display.n2
                     }
                     onN2Changed: {
                         display.n2 = parseFloat(n2)
-                        console.log("n2="+display.n2)
+                        n1 = display.n1
+                        n2 = display.n2
+                    }
+
+                    onSourceChanged: {
+                        display.source = source
+                        rate = display.rate
+                        n1 = display.n1
+                        n2 = display.n2
+                    }
+                    onQuoteChanged: {
+                        display.quote = quote
+                        rate = display.rate
                         n1 = display.n1
                         n2 = display.n2
                     }

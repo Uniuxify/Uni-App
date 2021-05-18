@@ -3,7 +3,7 @@ from PySide6 import QtCore
 
 
 class CurrencyBlock(QtCore.QObject):
-    def __init__(self, n1=1, n2=1, rate=1, source="RUB", quote="USD"):
+    def __init__(self, n1=1, n2=1, rate=1, source="USD", quote="USD"):
         super().__init__()
         self.__n1 = n1
         self.__n2 = n2
@@ -17,14 +17,16 @@ class CurrencyBlock(QtCore.QObject):
 
     @QtCore.Slot()
     def update_rate(self):
-        self.rate = cg_api.get_rate(self.source, self.quote)
+        try:
+            self.rate = float(cg_api.get_rate(self.source, self.quote))
+        except ValueError:
+            pass
 
     def get_rate(self):
-        return round(self.__rate, 4)
+        return round(self.__rate, 7)
 
     @QtCore.Slot(float)
     def set_rate(self, rate):
-        print("rate updated")
         self.__rate = rate
         self.rateChanged.emit()
         self.update_n2()

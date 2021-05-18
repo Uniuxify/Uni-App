@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.0
 Item {
@@ -48,14 +48,56 @@ Item {
                     Layout.alignment : Qt.AlignTop
                 }
 
-                Text {
-                    id:text11
-                    color: "#00BC13"
-                    text: source
+                ComboBox {
+                    id: control
+                    textRole: "display"
+                    model: currencyListModel
                     font.family: "Roboto"
                     font.pixelSize: 35
                     Layout.alignment : Qt.AlignTop
+                    Layout.topMargin: -5
+                    displayText: root.source
+                    Component.onCompleted: {
+                        currentIndex = find(root.source)
+                    }
+                    onActivated: {
+                        root.source = textAt(currentIndex)
+                    }
+                    contentItem: Text {
+                        text: control.displayText
+                        font: control.font
+                        color: control.pressed ? "#17a81a" : "#00BC13"
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                    }
+
+                    background: Rectangle {
+                        color: "transparent"
+                    }
+
+                    popup: Popup {
+                        y: control.height - 1
+                        width: control.width
+                        implicitHeight: contentItem.implicitHeight
+                        padding: 1
+
+                        contentItem: ListView {
+                            clip: true
+                            implicitHeight: contentHeight
+                            model: control.popup.visible ? control.delegateModel : null
+                            currentIndex: control.highlightedIndex
+
+                            ScrollIndicator.vertical: ScrollIndicator { }
+                        }
+
+                        background: Rectangle {
+                            border.color: "#21be2b"
+                            radius: 2
+                        }
+                    }
+
                 }
+
                 Text {
                     id:text12
                     color: "#BCBCBC"
@@ -63,6 +105,7 @@ Item {
                     font.family: "Roboto"
                     font.pixelSize: 35
                     Layout.alignment : Qt.AlignTop
+                    Layout.leftMargin: -15
                 }
                 Item {
                     id: text13
@@ -113,13 +156,56 @@ Item {
                         }
                     }
                 }
-                Text {
-                    id:text14
-                    color: "#00BC13"
-                    text: quote
+
+
+                ComboBox {
+                    id: control2
+                    textRole: "display"
+                    model: currencyListModel
                     font.family: "Roboto"
                     font.pixelSize: 35
                     Layout.alignment : Qt.AlignTop
+                    Layout.topMargin: -5
+                    displayText: root.quote
+                    onActivated: {
+                        root.quote = textAt(currentIndex)
+                    }
+                    Component.onCompleted: {
+                        currentIndex = find(root.quote)
+                    }
+                    contentItem: Text {
+                        text: control2.displayText
+                        font: control2.font
+                        color: control2.pressed ? "#17a81a" : "#00BC13"
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                    }
+
+                    background: Rectangle {
+                        color: "transparent"
+                    }
+
+                    popup: Popup {
+                        y: control2.height - 1
+                        width: control2.width
+                        implicitHeight: contentItem.implicitHeight
+                        padding: 1
+
+                        contentItem: ListView {
+                            clip: true
+                            implicitHeight: contentHeight
+                            model: control2.popup.visible ? control2.delegateModel : null
+                            currentIndex: control2.highlightedIndex
+
+                            ScrollIndicator.vertical: ScrollIndicator { }
+                        }
+
+                        background: Rectangle {
+                            border.color: "#21be2b"
+                            radius: 2
+                        }
+                    }
+
                 }
                 FocusScope  {
                     id: update_focus
