@@ -15,8 +15,6 @@ Item {
     signal closed()
 
     height: 180
-    anchors.right: parent.right
-    anchors.left: parent.left
     Rectangle {
         anchors.fill: parent
         color: "#0cffffff"
