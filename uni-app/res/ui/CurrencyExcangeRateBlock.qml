@@ -129,7 +129,8 @@ Item {
                         onEditingFinished: text_field13.ensureVisible(0)
                         onImplicitWidthChanged: { parent.implicitWidth = implicitWidth }
                         onTextChanged: {
-                            if(text != "" && text != "0") {
+                            const regexp = new RegExp("^0*(e[+\-\d]*)?$")
+                            if(text != "" && !text.match(regexp)) {
                                 root.rate = text
                                 rateTextBuffer = text
                                 errorMsg.text = ""
