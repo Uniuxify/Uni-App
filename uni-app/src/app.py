@@ -10,7 +10,6 @@ class CurrencyBlock(QtCore.QObject):
         self.__rate = rate
         self.__source = source
         self.__quote = quote
-        self.reversed = False  # n1 соответсвует source, n2 соответсвует quote
 
     @QtCore.Slot()
     def get_id(self):
@@ -31,10 +30,7 @@ class CurrencyBlock(QtCore.QObject):
         self.update_n2()
 
     def update_n1(self):
-        if not self.reversed:
-            self.__n1 = self.n2 / self.rate
-        else:
-            self.__n1 = self.n2 * self.rate
+        self.__n1 = self.n2 / self.rate
         self.n1Changed.emit()
 
     def get_n1(self):
@@ -46,10 +42,7 @@ class CurrencyBlock(QtCore.QObject):
         self.update_n2()
 
     def update_n2(self):
-        if not self.reversed:
-            self.__n2 = self.n1 * self.rate
-        else:
-            self.__n2 = self.n1 / self.rate
+        self.__n2 = self.n1 * self.rate
         self.n2Changed.emit()
 
     def get_n2(self):
