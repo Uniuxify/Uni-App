@@ -1,4 +1,3 @@
-# This Python file uses the following encoding: utf-8
 import os
 from pathlib import Path
 import sys
@@ -6,7 +5,8 @@ import sys
 
 from PySide6 import QtCore, QtGui, QtQml
 
-from app import BlocksModel, CurrencyBlock
+import coingate
+from app import BlocksModel, CurrencyListModel
 
 
 def qt_message_handler(mode, context, message):
@@ -28,9 +28,10 @@ if __name__ == "__main__":
     app = QtGui.QGuiApplication(sys.argv)
     engine = QtQml.QQmlApplicationEngine()
 
-    model = BlocksModel()
-    # model = CurrencyBlock()
-    engine.rootContext().setContextProperty("blockModel", model)
+    blocks_model = BlocksModel()
+    currency_list_model = CurrencyListModel(coingate.get_currency_list())
+    engine.rootContext().setContextProperty("blockModel", blocks_model)
+    engine.rootContext().setContextProperty("currencyListModel", currency_list_model)
 
     engine.load(os.fspath(Path(__file__).resolve().parent.parent / "res/ui/Index.qml"))
 

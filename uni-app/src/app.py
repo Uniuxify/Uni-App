@@ -101,7 +101,6 @@ class BlocksModel(QtCore.QAbstractListModel):
         return len(self.blockItems)
 
     def setData(self, index, value, role=QtCore.Qt.EditRole):
-        print(1)
         if role == QtCore.Qt.EditRole:
             self.blockItems[index.row()] = value
             self.dataChanged.emit(index, index)
@@ -131,7 +130,6 @@ class BlocksModel(QtCore.QAbstractListModel):
 
     @QtCore.Slot(str)
     def removeRow(self, obj_id, parent=QtCore.QModelIndex()):
-
         for row in range(0, self.rowCount()):
             if self.blockItems[row].get_id() == obj_id:
                 self.beginRemoveRows(QtCore.QModelIndex(), row, row)
@@ -139,3 +137,21 @@ class BlocksModel(QtCore.QAbstractListModel):
                 self.endRemoveRows()
                 return True
         return False
+
+
+class CurrencyListModel(QtCore.QAbstractListModel):
+    def __init__(self, currency_list):
+        super().__init__()
+        self.currency_list = []
+        self.beginInsertRows(QtCore.QModelIndex(), 0, len(currency_list)-1)
+        self.currency_list = currency_list
+        self.endInsertRows()
+
+    def rowCount(self, parent=QtCore.QModelIndex()):
+        return len(self.currency_list)
+
+    def data(self, index, role=QtCore.Qt.DisplayRole):
+        if role == QtCore.Qt.DisplayRole:
+            row = index.row()
+            if 0 <= row < self.rowCount():
+                return self.currency_list[row]
