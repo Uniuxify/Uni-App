@@ -7,8 +7,8 @@ Item {
     property string n1: "1"
     property string n2: "1"
     property string rate: "1"
-    property string source: "UNI"
-    property string quote: "UNI"
+    property string source: "USD"
+    property string quote: "USD"
 
     signal updateRate()
     signal swap()
