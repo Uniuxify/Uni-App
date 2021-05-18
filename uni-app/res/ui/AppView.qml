@@ -12,10 +12,8 @@ Item {
         id: win
         x: 500
         y: 100
-        // width: currencyBlocks.implicitWidth + 2 * currencyBlocks.anchors.rightMargin
         height: 432 * 2
         visible: true
-        // minimumWidth: currencyBlocks.implicitWidth + 2 * currencyBlocks.anchors.rightMargin
         minimumWidth: 730
         title: qsTr("UniApp")
         Image {
@@ -37,7 +35,6 @@ Item {
                 delegate: CurrencyExcangeRateBlock {
                     width: currencyBlocks.width
                     onClosed: currencyBlocks.model.removeRow(display.obj_id)
-                    onImplicitWidthChanged: currencyBlocks.implicitWidth = implicitWidth > currencyBlocks.implicitWidth ? implicitWidth : currencyBlocks.implicitWidth
                     onRateChanged: {
                         display.rate = parseFloat(rate)
                         rate = display.rate

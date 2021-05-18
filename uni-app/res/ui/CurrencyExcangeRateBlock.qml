@@ -15,8 +15,8 @@ Item {
     signal closed()
 
     height: 180
-    implicitWidth: Math.max(row1.implicitWidth, row2.implicitWidth) + 40 + 31
-
+    anchors.right: parent.right
+    anchors.left: parent.left
     Rectangle {
         anchors.fill: parent
         color: "#0cffffff"
