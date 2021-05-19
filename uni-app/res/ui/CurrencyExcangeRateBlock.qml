@@ -420,6 +420,18 @@ Item {
                 source: "remove.png"
             }
         }
+        CheckBox  {
+            id: autoupdate
+            Timer {
+                interval: 60000; running: autoupdate.checkState; repeat: true
+                onTriggered: updateRate()
+            }
+            anchors.rightMargin: 33
+            anchors.bottomMargin: 13
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            text: "autoupdate"
+        }
 
     }
 
