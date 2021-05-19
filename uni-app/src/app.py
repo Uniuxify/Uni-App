@@ -144,7 +144,9 @@ class BlocksModel(QtCore.QAbstractListModel):
         self.endRemoveRows()
 
     @QtCore.Slot()
-    def append(self, block=CurrencyBlock()):
+    def append(self, block=None):
+        if not block:
+            block = CurrencyBlock()
         self.beginInsertRows(QtCore.QModelIndex(), self.rowCount(), self.rowCount())
         self.blockItems.append(block)
         self.endInsertRows()
