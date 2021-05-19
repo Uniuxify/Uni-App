@@ -1,17 +1,19 @@
 import coingate as cg_api
 from PySide6 import QtCore
 import json
-import os
+import threading
 
 
 class CurrencyBlock(QtCore.QObject):
-    def __init__(self, rate=1, n1=1, n2=1, source="USD", quote="USD"):
+    def __init__(self, rate=1, n1=1, n2=1, source="USD", quote="USD", auto_update=False, update_delay=10000):
         super().__init__()
         self.__rate = rate
         self.__n1 = n1
         self.__n2 = n2
         self.__source = source
         self.__quote = quote
+        self.__auto_update = auto_update
+        self.__update_delay = update_delay
 
     @QtCore.Slot()
     def get_id(self):
@@ -77,6 +79,16 @@ class CurrencyBlock(QtCore.QObject):
         self.__quote = quote
         self.update_rate()
 
+    def get_auto_update(self):
+        return self.__auto_update
+
+    def set_auto_update(self, auto_update):
+        self.__auto_update = auto_update
+        self.autoUpdateChanged.emit()
+
+    def get_update_delay(self):
+        return self.__update_delay
+
     rateChanged = QtCore.Signal()
     rate = QtCore.Property(float, get_rate, set_rate, notify=rateChanged)
 
@@ -94,6 +106,11 @@ class CurrencyBlock(QtCore.QObject):
 
     obj_idChanged = QtCore.Signal()
     obj_id = QtCore.Property(str, get_id, notify=obj_idChanged)
+
+    autoUpdateChanged = QtCore.Signal()
+    auto_update = QtCore.Property(bool, get_auto_update, set_auto_update, notify=autoUpdateChanged)
+
+    update_delay = QtCore.Property(int, get_update_delay)
 
 
 class BlocksModel(QtCore.QAbstractListModel):
@@ -145,14 +162,18 @@ class BlocksModel(QtCore.QAbstractListModel):
     def save(self):
         temp = []
         for block in self.blockItems:
-            temp.append({"rate": block.rate, "n1": block.n1, "n2": block.n2, "source": block.source, "quote": block.quote})
+            temp.append({"rate": block.rate, "n1": block.n1, "n2": block.n2,
+                         "source": block.source, "quote": block.quote,
+                         "auto_update": block.auto_update, "update_delay": block.update_delay})
 
         json.dump(temp, open("../saves/save.json", "w+"), indent=4)
 
     def load(self, fp):
         json_obj = json.load(fp)
         for json_block in json_obj:
-            self.append(CurrencyBlock(rate=json_block["rate"], n1=json_block["n1"], n2=json_block["n2"], source=json_block["source"], quote=json_block["quote"]))
+            self.append(CurrencyBlock(rate=json_block["rate"], n1=json_block["n1"], n2=json_block["n2"],
+                                      source=json_block["source"], quote=json_block["quote"],
+                                      auto_update=json_block["auto_update"], update_delay=json_block["update_delay"]))
 
 
 class CurrencyListModel(QtCore.QAbstractListModel):

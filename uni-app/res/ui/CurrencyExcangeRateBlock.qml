@@ -9,6 +9,8 @@ Item {
     property string rate: "1"
     property string source: "USD"
     property string quote: "USD"
+    property bool autoUpdate: false
+    property int autoUpdateDelay: 60000
 
     signal updateRate()
     signal swap()
@@ -423,8 +425,12 @@ Item {
         CheckBox  {
             id: autoupdate
             Timer {
-                interval: 60000; running: autoupdate.checkState; repeat: true
+                interval: root.autoUpdateDelay; running: autoupdate.checkState; repeat: true
                 onTriggered: updateRate()
+            }
+            checkState: root.autoUpdate ? Qt.Checked : Qt.Unchecked
+            onCheckStateChanged: {
+                root.autoUpdate = checkState == Qt.Checked ? true : false
             }
             anchors.rightMargin: 33
             anchors.bottomMargin: 13

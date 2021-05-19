@@ -39,6 +39,8 @@ Item {
                         n2 = display.n2
                         source = display.source
                         quote = display.quote
+                        autoUpdate = display.auto_update
+                        autoUpdateDelay = display.update_delay
                     }
                     width: currencyBlocks.width
                     Component.onCompleted: {
@@ -74,6 +76,11 @@ Item {
                     onSwap: {
                         display.swap()
                         update()
+                    }
+
+                    onAutoUpdateChanged: {
+                        display.auto_update = autoUpdate
+                        autoUpdate = display.auto_update
                     }
                 }
             }
