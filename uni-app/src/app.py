@@ -27,7 +27,7 @@ class CurrencyBlock(QtCore.QObject):
             pass
 
     def get_rate(self):
-        return round(self.__rate, 7)
+        return self.__rate
 
     @QtCore.Slot(float)
     def set_rate(self, rate):
@@ -40,7 +40,7 @@ class CurrencyBlock(QtCore.QObject):
         self.n1Changed.emit()
 
     def get_n1(self):
-        return round(self.__n1, 4)
+        return self.__n1
 
     def set_n1(self, n1):
         self.__n1 = n1
@@ -52,7 +52,7 @@ class CurrencyBlock(QtCore.QObject):
         self.n2Changed.emit()
 
     def get_n2(self):
-        return round(self.__n2, 4)
+        return self.__n2
 
     def set_n2(self, n2):
         self.__n2 = n2
