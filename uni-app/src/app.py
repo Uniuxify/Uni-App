@@ -1,7 +1,6 @@
 import coingate as cg_api
 from PySide6 import QtCore
 import json
-import threading
 
 
 class CurrencyBlock(QtCore.QObject):
